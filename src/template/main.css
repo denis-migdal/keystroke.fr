@@ -1,0 +1,41 @@
+.navbar-nav { 
+    flex-direction: row;
+}
+
+.navbar-nav > .nav-item > .nav-link {
+	padding: 0px 14px;
+	padding-bottom: calc( 0.5rem - 5px );
+	margin-top: -5px;
+}
+
+.navbar-nav.float-right {
+	margin-top: calc( 5px );
+	margin-bottom: calc( -5px );
+}
+
+.navbar-nav.nav-tabs {
+	margin-bottom: calc( -0.5rem - 5px );
+}
+
+
+h1 { text-transform: capitalize; }
+
+body > nav > .container {
+	padding-left : 0px;
+	padding-right: 0px;
+}
+
+body {
+	font-size: 1.5em;
+}
+
+body > .container {
+	padding-top:20px;
+
+
+	margin-top: 1em;
+}
+
+p {
+	text-align: justify;
+}

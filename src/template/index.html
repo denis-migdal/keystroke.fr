@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<!--EXPORT './API' as KGUI.Template -->
+<html lang="en" xml:lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>		
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Keystroke.fr</title>
+		<base href='{{base_url}}' />
+		<link rel="icon" type="image/png" href="__templates/__default/img/icon.svg" /><!-- ${require('./img/icon.svg')} -->
+		<script src='__templates/__default/bundle.js' defer></script>
+	</head>
+
+	<body>
+		<component template='./header'></component>
+		<div class='container jumbotron img-rounded'>
+			<h1>{{title}}</h1>
+			<component template='{{page}}' __args={{args}}></component>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,109 @@
+[This list is incomplete]<br/>
+<br/>
+<b>Formatted datasets:</b><br/>
+<i>Each datasets follow strictly the same formats (CSV and compact), detailed in the next sections. Compact format enables datasets usage in size-constrained environments (e.g. in browsers).<br/>
+<u>Note:</u> Use raw files to use data not included in current formats.</i><br/>
+<br/>
+<ul>
+	<li><b><u>CMU</u></b> <a href='https://www.cs.cmu.edu/~keystroke/' target='_blank'>(Source)</a> <a href='https://www.cs.cmu.edu/~keystroke/#sec2' target='_blank'>[Raw]</a> [Same-Text / 51 users / 400 entries per users]
+		<ul>
+			<li><b>.tie5Roanl</b> <a href="__assets/kdb/CMU/content.csv" download>[CSV] <a href="__assets/kdb/CMU/content.bin" download>[Compact]</a></li>
+		</ul>
+	</li>
+
+	
+	<li><b><u>GREYC-Keystroke</u></b> <a href='https://hal.archives-ouvertes.fr/hal-00432768/document' target='_blank'>(Source)</a> <a href='http://www.ecole.ensicaen.fr/~rosenber/pub/keystroke.db' target='_blank'>[Raw]</a> [Same-Text / 133 users / 5 to 107 entries per users]
+		<ul>
+			<li><b>laboratoire greyc</b> <a href="__assets/kdb/GREYC-Keystroke/content.csv" download>[CSV] <a href="__assets/kdb/GREYC-Keystroke/content.bin" download>[Compact]</a><br/>
+			<i>/!\\ 37 incoherent entries removed.</i></li>
+		</ul>
+	</li>
+
+	<li><b><u>GREYC-NISLAB</u></b> <a href='https://hal.archives-ouvertes.fr/hal-00999089/document' target='_blank'>(Source)</a> <a href='http://www.ecole.ensicaen.fr/~rosenber/pub/GREYCNISLAB_NEW.xlsx' target='_blank'>[Raw]</a> [Same-Text / 110 users / 20 entries per users]
+		<ul>
+			<li><i><u>meta-data:</u> handedness L/R, age, gender M/F<br/>
+			/!\\ The 10 last entries of each users has been typed with only one hand.</i></li>
+			<li><b>leonardo dicaprio</b> <a href="__assets/kdb/GREYC-NISLAB_leonardo/content.csv" download>[CSV] <a href="__assets/kdb/GREYC-NISLAB_leonardo/content.bin" download>[Compact]</a><br/>
+			<i>/!\\ 2 incoherent entries removed.</i></li>
+			<li><b>michael schumacher</b> <a href="__assets/kdb/GREYC-NISLAB_michael/content.csv" download>[CSV] <a href="__assets/kdb/GREYC-NISLAB_michael/content.bin" download>[Compact]</a></li>
+			<li><b>red hot chilli peppers</b> <a href="__assets/kdb/GREYC-NISLAB_red/content.csv" download>[CSV] <a href="__assets/kdb/GREYC-NISLAB_red/content.bin" download>[Compact]</a></li>
+			<li><b>the rolling stones</b> <a href="__assets/kdb/GREYC-NISLAB_rolling/content.csv" download>[CSV] <a href="__assets/kdb/GREYC-NISLAB_rolling/content.bin" download>[Compact]</a></li>
+			<li><b>united states of america</b> <a href="__assets/kdb/GREYC-NISLAB_united/content.csv" download>[CSV]</a> <a href="__assets/kdb/GREYC-NISLAB_united/content.bin" download>[Compact]</a></li>
+		</ul>
+	</li>
+
+	<li><b><u>GREYC-Web</u></b> <a href='https://hal.archives-ouvertes.fr/hal-00714251/document' target='_blank'>(Source)</a> <a href='http://www.ecole.ensicaen.fr/~rosenber/pub/webkeystroke.tar.gz' target='_blank'>[Raw]</a> [Same-Text / 103 to 117 users / 2 to 456 entries per users]
+		<ul>
+			<li><i><u>meta-data:</u> age, gender M/F</li>
+			<li><b>laboratoire greyc</b> <a href="__assets/kdb/GREYC-Web_login/content.csv" download>[CSV] <a href="__assets/kdb/GREYC-Web_login/content.bin" download>[Compact]</a><br/>
+			<i>/!\\ 46 incoherent entries removed.</i><br/>
+			<i>/!\\ 3 very long values truncated to 0x7FFF in compact</i></li>
+			<li><b>sésame</b> <a href="__assets/kdb/GREYC-Web_password/content.csv" download>[CSV] <a href="__assets/kdb/GREYC-Web_password/content.bin" download>[Compact]</a><br/>
+			<i>/!\\ 2639 incoherent entries removed.</i></li>
+		</ul>
+	</li>
+
+	<li><b>KPPDW</b></li>
+	<li>Other datasets coming soon.</li>
+</ul>
+<br/>
+<b>Other sources:</b><br/>
+You can find Keystroke datasets on <a href='https://vmonaco.com/datasets/' target='_blank'>Vinnie Monaco's website</a>. GREYC Keystroke datasets can be found on <a href='http://www.ecole.ensicaen.fr/~rosenber/#ressources' target='_blank'>Christophe Rosenberger's website</a>.<br/>
+<br/>
+<b>CSV format description</b><br/>
+<ul>
+	<li>First line: header</li>
+	<li>Column 1: User's name</li>
+	<li>Column 2: Typed text</li>
+	<li>Column 3 to N: User meta-data</li>
+	<li>Column N+2k+1: Press to Release durations [=A->a] (integer in ms)</li>
+	<li>Column N+2k+2: Press to Press durations with next typed character [=A->B] (integers in ms)</li>
+</ul>
+<u><i>Example:</i></u><br/>
+
+<code>UserID Text gender A->a A->B B->b<br/>
+1 ab M 1 2 3<br/>
+1 ab M 1 2 3<br/>
+2 ab F 1 2 3
+</code><br/>
+<br/>
+<b>Compact format description</b><br/>
+The formatted datasets follow this format (in UTF-16):
+<ul>
+	<li>The typed text</li>
+	<li>0x0000</li>
+	<li>Users meta-data array (JSON)</li>
+	<li>0x0000</li>
+	<li>For each users its number of entries (2-bytes integer)</li>
+	<li>0x0000</li>
+	<li>For each users:
+		<ul>
+			<li>For each user's entries:
+				<ul>
+					<li>For each typed characters:
+						<ul>
+							<li>Press to Release durations [=A->a] (2-bytes integers in ms)</li>
+							<li>Press to Press durations with next typed character [=A->B] (2-bytes integers in ms)</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+</ul>
+<u><i>Example:</i></u><br/>
+
+<code>ab <i># typed text.</i><br/>
+<b>0x0000</b> <i># Beginning of users meta-data.</i><br/>
+[{"gender":"M"},{"gender":"F"}] <i># 2 users, user 1 is male, user 2 is female.</i><br/>
+<b>0x0000</b> <i># Beginning of users number of entries.</i><br/>
+0x0002 <i># 2 entries for user 1.</i><br/>
+0x0001 <i># 1 entry for user 2.</i><br/>
+<b>0x0000</b> <i># Beginning of users entries.</i><br/>
+0x0001 0x0002 0x0003 <i># User 1 first entry.</i><br/>
+0x0001 0x0002 0x0003 <i># User 1 second entry.</i><br/>
+0x0001 0x0002 0x0003 <i># User 2 first entry.</i><br/>
+<i># 0x0001 => A->a = Release(A) - Press(A) = 1ms</i><br/>
+<i># 0x0002 => A->B = Press(B) - Press(A) = 2ms</i><br/>
+<i># 0x0003 => B->b = Release(B) - Press(B) = 3ms</i>
+</code>
