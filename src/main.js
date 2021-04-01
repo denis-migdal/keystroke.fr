@@ -1,40 +1,26 @@
-const fs = require('fs');
+let {list_html_index_files} = require('prehtml-loader/webpack_helper.js');
 
 
 module.exports = function(is_production, path_suffix) {
-
-	function* listPages(dir) {
-
-
-		for(let file of fs.readdirSync(dir) ) {
-
-			let path = `${dir}/${file}`;
-
-			if( file === 'index.html' )
-				yield path;
-			if( fs.lstatSync(path).isDirectory() )
-				yield * listPages(path);
-		}
-
-	}
 
 	let pages = {
 		"": { __src: './src/homepage', __template_args: {title: 'Home'} } // homepage
 	};
 
-	for(let page of [... listPages('./src/pages') ] ) {
+	for(let [page_name, page_path] of [... list_html_index_files('./src/pages') ] )
+		pages[page_name] = { __src: page_path, __template_args: {title: page_name} };
 
-		page = page.slice( 0, - '/index.html'.length );
-		let pagename = page.slice( './src/pages/'.length );
-		pages[pagename] = { __src: page, __template_args: {title: pagename} };
-	}
+
+	let base_url = is_production ? 'https://keystroke.fr'
+								 : `file://${__dirname}/../dist/${path_suffix}`;
+
 
 	return {
 
 		templates_input_dir: `${__dirname}/`,
 		templates_output_dir: `./dist/${path_suffix}/__templates/`, // optionnal
 		templates: {
-			__default:{ __src: 'template', __args: { base_url: `file:///home/demigda//Data/Git/keystroke.fr/dist/${path_suffix}` } }
+			__default:{ __src: 'template', __args: { base_url: base_url } }
 		},
 
 		pages_output_dir: `./dist/${path_suffix}/`, // optionnal

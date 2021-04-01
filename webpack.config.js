@@ -3,6 +3,7 @@ const fs = require('fs');
 const website_builder = require('./src/main.js');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const RemovePlugin = require('remove-files-webpack-plugin');
 
 let {build_website} = require('prehtml-loader/webpack_helper.js');
 
@@ -12,16 +13,16 @@ module.exports = (_, {mode}) => {
 
 
 	let is_production = mode === 'production';
-
 	let path_suffix = is_production ? 'prod' : 'dev';
 
-	let website = website_builder(is_production, path_suffix);
-
+	// pre-clean
 	if( fs.existsSync(`${__dirname}/dist/${path_suffix}`) )
 		fs.rmdirSync(`${__dirname}/dist/${path_suffix}`, { recursive: true });
 
 	if( fs.existsSync(`${__dirname}/out`) )
 		fs.rmdirSync(`${__dirname}/out`, { recursive: true });
+
+	let website = website_builder(is_production, path_suffix);
 
 	let html_config = (dst_path, src) => {
 
@@ -50,13 +51,25 @@ module.exports = (_, {mode}) => {
 		};
 	};
 
-	let js_config = (dst_path, src) => {
+	let js_config = (dst_path, src, html_targets) => {
+
+		let css_purge = {
+
+			loader: '@americanexpress/purgecss-loader',
+            options: { paths: html_targets }
+		};
+
+		css_purge = {
+
+			loader: '@fullhuman/purgecss-loader',
+			options: { content: html_targets }
+		}
 
 		return {
 			module: {
 				rules: [{
 					test: /\.css$/,
-					use: ['style-loader', 'css-loader']
+					use: is_production ? ['style-loader', 'css-loader', css_purge] : ['style-loader', 'css-loader']
 				}, {
 					test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
 					loader: 'url-loader'
@@ -75,18 +88,24 @@ module.exports = (_, {mode}) => {
 	};
 
 
-	let config = build_website(website, html_config, js_config);
+	let webpack_plugins = [
+		new CopyWebpackPlugin({patterns: [
+			{ from: 'assets', to: `dist/${path_suffix}/__assets` },
+			{ from: 'src/template/img', to: `dist/${path_suffix}/__templates/__default/img` }
+		]})
+	];
 
-	let lconfig = config[config.length-1];
-	lconfig.plugins = lconfig.plugins ?? [];
+	// post-clean
+	if( is_production )
+		webpack_plugins.push( new RemovePlugin({
+			after: {
+				test: [{
+	                folder: `dist/${path_suffix}/`,
+	                method: (path) => path.endsWith('/bundle.js.LICENSE.txt'),
+	                recursive: true
+	            }]
+			}
+		}));
 
-	lconfig.plugins.push( new CopyWebpackPlugin({patterns: [
-													{ from: 'assets', to: `dist/${path_suffix}/__assets` },
-													{ from: 'src/template/img', to: `dist/${path_suffix}/__templates/__default/img` }
-												]} ));
-
-
-
-	return config;
-
+	return build_website(website, html_config, js_config, webpack_plugins);
 };
