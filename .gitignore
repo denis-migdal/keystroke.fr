@@ -1,2 +1,5 @@
-out/
+dist/
+node_modules/
 assets/
+out/
+./package-lock.json
