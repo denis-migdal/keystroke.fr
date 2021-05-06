@@ -22,11 +22,12 @@ module.exports = (_, {mode}) => {
 	if( fs.existsSync(`${__dirname}/out`) )
 		fs.rmdirSync(`${__dirname}/out`, { recursive: true });
 
+
 	let website = website_builder(is_production, path_suffix);
 
 	let html_config = (dst_path, src) => {
 
-		return {
+		return [{
 			module: {
 				rules: [{
 					enforce: 'post',
@@ -48,7 +49,7 @@ module.exports = (_, {mode}) => {
 				publicPath: '',
 				filename: `./out/${dst_path}.junk`
 			}
-		};
+		}];
 	};
 
 	let js_config = (dst_path, src, html_targets) => {
@@ -56,16 +57,21 @@ module.exports = (_, {mode}) => {
 		let css_purge = {
 
 			loader: '@americanexpress/purgecss-loader',
-            options: { paths: html_targets }
+            options: {
+            	paths: html_targets,
+            	whitelist: ['show']
+            }
 		};
-
+		/*
 		css_purge = {
 
 			loader: '@fullhuman/purgecss-loader',
-			options: { content: html_targets }
-		}
+			options: {
+				content: html_targets,
+            	whitelistPatterns: []}
+		}*/
 
-		return {
+		return [{
 			module: {
 				rules: [{
 					test: /\.css$/,
@@ -84,7 +90,7 @@ module.exports = (_, {mode}) => {
 				publicPath: '',
 				filename: `${dst_path}`,
 			}
-		};
+		}];
 	};
 
 

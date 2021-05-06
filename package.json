@@ -2,6 +2,7 @@
 	"name": "keystroke.fr",
 	"version": "2.0.0",
 	"description": "",
+	"private": true,
 	"main": "index.js",
 	"scripts": {
 		"build-dev": "webpack --mode=development",
@@ -19,7 +20,7 @@
 		"html-loader": "^0.5.5",
 		"html-minifier-loader": "^1.4.1",
 		"popper.js": "^1.16.1",
-		"prehtml-loader": "2.0.1",
+		"prehtml-loader": "^2.0.3",
 		"project-skeleton": "0.0.16",
 		"raw-loader": "^4.0.1",
 		"remove-files-webpack-plugin": "^1.4.4",

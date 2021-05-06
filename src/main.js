@@ -8,11 +8,11 @@ module.exports = function(is_production, path_suffix) {
 	};
 
 	for(let [page_name, page_path] of [... list_html_index_files('./src/pages') ] )
-		pages[page_name] = { __src: page_path, __template_args: {title: page_name} };
+		pages[page_name] = { __src: page_path, __template_args: {title: page_name.slice(1) } };
 
 
 	let base_url = is_production ? 'https://keystroke.fr'
-								 : `file://${__dirname}/../dist/${path_suffix}`;
+								 : `file://${__dirname}/../dist/${path_suffix}/`;
 
 
 	return {
